@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { createMovieRoute } from "@/lib/constants/route";
 
 type Movie = {
   id: number;
@@ -43,6 +46,8 @@ const movieCategories: { name: string; movies: Movie[] }[] = [
 ];
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <main className="container mx-auto px-4 py-8">
@@ -50,7 +55,6 @@ export default function Home() {
           <section key={category.name} className="mb-12">
             <div className="flex items-center gap-4 mb-6">
               <h2 className="text-2xl font-semibold">{category.name}</h2>
-              <Badge variant="secondary">{category.movies.length} movies</Badge>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -58,6 +62,7 @@ export default function Home() {
                 <Card
                   key={movie.id}
                   className="overflow-hidden border-0 shadow-none p-0 cursor-pointer"
+                  onClick={() => router.push(createMovieRoute(movie.id))}
                 >
                   <CardContent className="relative p-0">
                     <div className="aspect-[2/3] relative">
@@ -65,7 +70,7 @@ export default function Home() {
                         src={movie.image}
                         alt={movie.title}
                         fill
-                        className="object-cover"
+                        className="object-cover rounded-md"
                         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
                       />
                     </div>
