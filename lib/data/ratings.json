@@ -16,5 +16,71 @@
     "movieId": 7,
     "userId": "c3d4e5f6-a7b8-9012-cdef-345678901234",
     "rating": 4
+  },
+  {
+    "id": 4,
+    "movieId": 2,
+    "userId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "rating": 2
+  },
+  {
+    "id": 5,
+    "movieId": 3,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 3
+  },
+  {
+    "id": 6,
+    "movieId": 4,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 3
+  },
+  {
+    "id": 7,
+    "movieId": 6,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 4
+  },
+  {
+    "id": 8,
+    "movieId": 10,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 5
+  },
+  {
+    "id": 9,
+    "movieId": 11,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 3
+  },
+  {
+    "id": 10,
+    "movieId": 9,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 2
+  },
+  {
+    "id": 11,
+    "movieId": 13,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 2
+  },
+  {
+    "id": 12,
+    "movieId": 7,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 4
+  },
+  {
+    "id": 13,
+    "movieId": 14,
+    "userId": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+    "rating": 4
+  },
+  {
+    "id": 14,
+    "movieId": 14,
+    "userId": "d4e5f6a7-b8c9-0123-def0-456789012345",
+    "rating": 3
   }
 ]
