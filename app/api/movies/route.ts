@@ -1,29 +1,16 @@
 import { NextResponse } from 'next/server';
 import moviesData from '@/lib/data/movies.json';
-import ratingsDataRaw from '@/lib/data/ratings.json';
+import { calcAvgRating } from '@/lib/utils';
+import { MovieController } from '@/lib/controllers/movie.controller';
 
-type Rating = {
-  id: number;
-  movieId: number;
-  userId: string;
-  rating: number;
-};
-
-const ratingsData = ratingsDataRaw as Rating[];
-
-function calcAvgRating(movieId: number): number {
-  const movieRatings = ratingsData.filter(rating => rating.movieId === movieId);
-  if (movieRatings.length === 0) return 0;
-  
-
-  const ratingSum = movieRatings.reduce((sum, rating) => sum + rating.rating, 0);
-  const avgRating = ratingSum / movieRatings.length;
-
-  return Number(avgRating.toFixed(1));
-}
-
-export async function GET() {
+export async function POST(request: Request) {
   try {
+    const { userId } = await request.json();
+
+    if (!userId) {
+      return NextResponse.json({ error: 'userId is required' }, { status: 400 });
+    }
+
     const movieCategories = moviesData.map(category => {
       const moviesWithRatings = category.movies.map(movie => {
         const movieWithRating = {
@@ -45,7 +32,16 @@ export async function GET() {
       return categoryWithRatings;
     });
 
-    return NextResponse.json(movieCategories);
+
+    const unseenMovies = MovieController.getUnseenMovies(userId);
+    const unseenCategory = {
+      name: 'Unseen',
+      movies: unseenMovies
+    };
+
+    const allCategories = [unseenCategory, ...movieCategories];
+
+    return NextResponse.json(allCategories);
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'Fail' }, { status: 500 });
