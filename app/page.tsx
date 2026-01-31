@@ -4,49 +4,33 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { createMovieRoute } from "@/lib/constants/route";
+import { useQuery } from "@tanstack/react-query";
 
 type Movie = {
   id: number;
   title: string;
   image: string;
   rating: number;
-  releaseDate: Date;
+  releaseDate: string;
 };
 
-const movieCategories: { name: string; movies: Movie[] }[] = [
-  {
-    name: "ACTION",
-    movies: [
-      { id: 1, title: "พี่มาก..พระโขนง", image: "/thumnails/2koX1xLkpTQM4IZebYvKysFW1Nh.webp", rating: 4.2, releaseDate: new Date(2010, 9) },
-      { id: 2, title: "สัปเหร่อ", image: "/thumnails/fNqlsmu2tiI1bXcpU31yjHPkiJz.webp", rating: 3.8, releaseDate: new Date(2006, 7) },
-      { id: 3, title: "สุริโยไท", image: "/thumnails/hEwUU5qXjJEwHglSyOmwurhQyF8.webp", rating: 4.5, releaseDate: new Date(2007, 2) },
-      { id: 4, title: "นาคี 2", image: "/thumnails/hjJkrLXhWvGHpLeLBDFznpBTY1S.webp", rating: 4.0, releaseDate: new Date(2018, 8) },
-      { id: 5, title: "บุพเพสันนิวาส ๒", image: "/thumnails/iwZIR8wp1lqj69zsbWmZKhXTTIU.webp", rating: 3.9, releaseDate: new Date(2014, 1) },
-      { id: 6, title: "ไอฟาย..แต๊งกิ้ว..เลิฟยู้", image: "/thumnails/kkp8dRftSHIiNceNMrEzTfmr7IT.webp", rating: 4.3, releaseDate: new Date(2010, 11) },
-    ],
-  },
-  {
-    name: "COMEDY",
-    movies: [
-      { id: 7, title: "ตุ๊ดซี่ส์ แอนด์ เดอะเฟค", image: "/thumnails/luhKkdD80qe62fwop6sdrXK9jUT.webp", rating: 4.1, releaseDate: new Date(2016, 4) },
-      { id: 8, title: "น้อง.พี่.ที่รัก", image: "/thumnails/nLTAs08doHYZ1obg5PTcWliR7vo.webp", rating: 3.7, releaseDate: new Date(2018, 10) },
-      { id: 9, title: "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 1 องค์ประกันหงสา", image: "/thumnails/oJ2jVlhj60ofzFfXjfLkOD01rxZ.webp", rating: 4.4, releaseDate: new Date(2007, 0) },
-      { id: 10, title: "Friend Zone ระวัง..สิ้นสุดทางเพื่อน", image: "/thumnails/otxZzMh53TsN7yYFqSZ3rwH1yMd.webp", rating: 3.6, releaseDate: new Date(2019, 1) },
-    ],
-  },
-  {
-    name: "DRAMA",
-    movies: [
-      { id: 11, title: "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 2 ประกาศอิสรภาพ", image: "/thumnails/qTvFWCGeGXgBRaINLY1zqgTPSpn.webp", rating: 4.6, releaseDate: new Date(2007, 2) },
-      { id: 12, title: "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 5 ยุทธหัตถี", image: "/thumnails/wijlZ3HaYMvlDTPqJoTCWKFkCPU.webp", rating: 4.2, releaseDate: new Date(2010, 7) },
-      { id: 13, title: "อีเรียมซิ่ง", image: "/thumnails/xeEw3eLeSFmJgXZzmF2Efww0q3s.webp", rating: 3.8, releaseDate: new Date(2015, 5) },
-      { id: 14, title: "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 3 ยุทธนาวี", image: "/thumnails/z53D72EAOxGRqdr7KXXWp9dJiDe.webp", rating: 4.1, releaseDate: new Date(2008, 0) },
-    ],
-  },
-];
+type MovieCategory = {
+  name: string;
+  movies: Movie[];
+};
 
 export default function Home() {
   const router = useRouter();
+
+  const { data: movieCategories = [], isLoading: loading } = useQuery<MovieCategory[]>({
+    queryKey: ['movies'],
+    queryFn: async (): Promise<MovieCategory[]> => {
+      const response = await fetch('/api/movies');
+      
+      if (!response.ok) throw new Error('Fail');
+      return response.json();
+    },
+  });
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -85,7 +69,7 @@ export default function Home() {
                         {movie.title}
                       </h3>
                       <p className="text-xs text-muted-foreground mt-1">
-                        {movie.releaseDate.getFullYear()}-{String(movie.releaseDate.getMonth() + 1).padStart(2, '0')}
+                        {new Date(movie.releaseDate).getFullYear()}-{String(new Date(movie.releaseDate).getMonth() + 1).padStart(2, '0')}
                       </p>
                     </div>
                   </CardContent>

@@ -1,0 +1,31 @@
+[
+  {
+    "name": "ACTION",
+    "movies": [
+      { "id": 1, "title": "พี่มาก..พระโขนง", "image": "/thumnails/2koX1xLkpTQM4IZebYvKysFW1Nh.webp", "releaseDate": "2010-10-01" },
+      { "id": 2, "title": "สัปเหร่อ", "image": "/thumnails/fNqlsmu2tiI1bXcpU31yjHPkiJz.webp", "releaseDate": "2006-08-01" },
+      { "id": 3, "title": "สุริโยไท", "image": "/thumnails/hEwUU5qXjJEwHglSyOmwurhQyF8.webp", "releaseDate": "2007-03-01" },
+      { "id": 4, "title": "นาคี 2", "image": "/thumnails/hjJkrLXhWvGHpLeLBDFznpBTY1S.webp", "releaseDate": "2018-09-01" },
+      { "id": 5, "title": "บุพเพสันนิวาส ๒", "image": "/thumnails/iwZIR8wp1lqj69zsbWmZKhXTTIU.webp", "releaseDate": "2014-02-01" },
+      { "id": 6, "title": "ไอฟาย..แต๊งกิ้ว..เลิฟยู้", "image": "/thumnails/kkp8dRftSHIiNceNMrEzTfmr7IT.webp", "releaseDate": "2010-12-01" }
+    ]
+  },
+  {
+    "name": "COMEDY",
+    "movies": [
+      { "id": 7, "title": "ตุ๊ดซี่ส์ แอนด์ เดอะเฟค", "image": "/thumnails/luhKkdD80qe62fwop6sdrXK9jUT.webp", "releaseDate": "2016-05-01" },
+      { "id": 8, "title": "น้อง.พี่.ที่รัก", "image": "/thumnails/nLTAs08doHYZ1obg5PTcWliR7vo.webp", "releaseDate": "2018-11-01" },
+      { "id": 9, "title": "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 1 องค์ประกันหงสา", "image": "/thumnails/oJ2jVlhj60ofzFfXjfLkOD01rxZ.webp", "releaseDate": "2007-01-01" },
+      { "id": 10, "title": "Friend Zone ระวัง..สิ้นสุดทางเพื่อน", "image": "/thumnails/otxZzMh53TsN7yYFqSZ3rwH1yMd.webp", "releaseDate": "2019-02-01" }
+    ]
+  },
+  {
+    "name": "DRAMA",
+    "movies": [
+      { "id": 11, "title": "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 2 ประกาศอิสรภาพ", "image": "/thumnails/qTvFWCGeGXgBRaINLY1zqgTPSpn.webp", "releaseDate": "2007-03-01" },
+      { "id": 12, "title": "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 5 ยุทธหัตถี", "image": "/thumnails/wijlZ3HaYMvlDTPqJoTCWKFkCPU.webp", "releaseDate": "2010-08-01" },
+      { "id": 13, "title": "อีเรียมซิ่ง", "image": "/thumnails/xeEw3eLeSFmJgXZzmF2Efww0q3s.webp", "releaseDate": "2015-06-01" },
+      { "id": 14, "title": "ตำนานสมเด็จพระนเรศวรมหาราช ภาค 3 ยุทธนาวี", "image": "/thumnails/z53D72EAOxGRqdr7KXXWp9dJiDe.webp", "releaseDate": "2008-01-01" }
+    ]
+  }
+]
