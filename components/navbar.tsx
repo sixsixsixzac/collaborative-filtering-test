@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,15 +9,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
+import { useUserStore } from "@/lib/stores/user-store";
 import type { User as UserType } from "@/lib/interfaces";
 
-interface NavbarProps {
-  users: UserType[];
-  selectedUser: UserType | null;
-  onUserSelect: (user: UserType) => void;
-}
+export function Navbar() {
+  const currentUser = useUserStore((state) => state.currentUser);
+  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
 
-export function Navbar({ users, selectedUser, onUserSelect }: NavbarProps) {
+  const { data: users = [] } = useQuery<UserType[]>({
+    queryKey: ['users'],
+    queryFn: async (): Promise<UserType[]> => {
+      const response = await fetch('/api/users');
+
+      if (!response.ok) throw new Error('Fail');
+      return response.json();
+    },
+  });
 
   return (
     <nav className="border-b bg-white dark:bg-gray-900">
@@ -31,15 +39,15 @@ export function Navbar({ users, selectedUser, onUserSelect }: NavbarProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
                   <User className="w-4 h-4 mr-2" />
-                  {selectedUser?.name || 'Players'}
+                  {currentUser?.name}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 {users.map((user) => (
                   <DropdownMenuItem
                     key={user.id}
-                    onClick={() => onUserSelect(user)}
-                    className={selectedUser?.id === user.id ? "bg-accent" : ""}
+                    onClick={() => setCurrentUser(user)}
+                    className={currentUser?.id === user.id ? "bg-accent" : ""}
                   >
                     {user.name}
                   </DropdownMenuItem>

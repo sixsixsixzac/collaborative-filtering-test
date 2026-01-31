@@ -94,14 +94,10 @@ function getRecommendMovies(userId: UserId, limit: number): RecommendMovie[] {
     return predictedMovies.slice(0, limit);
 }
 console.log("===================Recommend Movies===================")
-for (const user of users()) { 
+for (const user of users()) {
     console.log(`${user}:`, ratings[user]);
     const ratedMovies = Object.keys(ratings[user]);
     const unseenMovies = movies().filter(movieId => !ratedMovies.includes(movieId));
     const unseenWithRates = unseenMovies.map(movieId => ({ movieId, rate: predictedRate(user, movieId) }));
     console.log(unseenWithRates);
 }
-// console.log("===================Recommend Movies===================")
-
-// console.log("user1 vs user2 similarity (MAD):", similarity("user1", "user2"));
-// console.log("user1 vs user3 similarity (MAD):", similarity("user1", "user3"));

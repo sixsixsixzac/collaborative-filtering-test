@@ -4,6 +4,7 @@ export interface Movie {
   image: string;
   rating: number;
   releaseDate: string;
+  category?: string;
 }
 
 export interface MovieCategory {
