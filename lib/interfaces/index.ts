@@ -5,6 +5,7 @@ export interface Movie {
   rating: number;
   releaseDate: string;
   category?: string;
+  userRating?: number;
 }
 
 export interface MovieCategory {

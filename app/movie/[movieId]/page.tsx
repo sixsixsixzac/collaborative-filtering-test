@@ -2,12 +2,13 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Star, Film, ArrowLeft, ArrowLeft as BackIcon } from "lucide-react";
+import { Star, Film, ArrowLeft } from "lucide-react";
 import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent, EmptyMedia } from "@/components/ui/empty";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUserStore } from "@/lib/stores/user-store";
 import type { Movie } from "@/lib/interfaces";
+import { MovieService } from "@/lib/services/movie.service";
 
 export default function MoviePage() {
     const params = useParams();
@@ -28,20 +29,13 @@ export default function MoviePage() {
     useEffect(() => {
         const video = videoRef.current;
         if (video && movie) {
-            const onEnd = () => {
-                console.log('video ended');
-                setVideoEnded(true);
-            };
-
+            const onEnd = () => setVideoEnded(true);
             const onMeta = () => {
-                if (video.duration > 5) {
-                    video.currentTime = video.duration - 5;
-                }
+                if (video.duration > 5) video.currentTime = video.duration - 5;
             };
 
             video.addEventListener('ended', onEnd);
             video.addEventListener('loadedmetadata', onMeta);
-
             return () => {
                 video.removeEventListener('ended', onEnd);
                 video.removeEventListener('loadedmetadata', onMeta);
@@ -53,19 +47,7 @@ export default function MoviePage() {
         const fetchMovie = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`/api/movies/${movieId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        userId: currentUser?.id || null,
-                    }),
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to load movie');
-                }
-                const movieData = await response.json();
+                const movieData = await MovieService.getMovieDetails(movieId, currentUser?.id);
                 setMovie(movieData);
 
                 if (movieData.userRating) {
@@ -79,16 +61,21 @@ export default function MoviePage() {
             }
         };
 
-        if (movieId) {
-            fetchMovie();
-        }
+        if (movieId) { fetchMovie(); }
     }, [movieId]);
 
 
-    const onRate = (starValue: number) => {
-        setRating(starValue);
-        setHoverRating(0);
-        setVideoEnded(false);
+    const onRate = async (starValue: number) => {
+        if (!currentUser?.id) { return; }
+
+        try {
+            await MovieService.rateMovie(movieId, starValue, currentUser.id);
+            setRating(starValue);
+            setHoverRating(0);
+            setUserHasRated(true);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Fail');
+        }
     };
 
     const Rating = () => {
@@ -101,7 +88,11 @@ export default function MoviePage() {
                     {[1, 2, 3, 4, 5].map((star) => (
                         <button
                             key={star}
-                            onClick={() => !userHasRated && onRate(star)}
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if (!userHasRated) onRate(star);
+                            }}
                             onMouseEnter={() => !userHasRated && setHoverRating(star)}
                             className={`transition-colors duration-150 focus:outline-none p-1 ${userHasRated ? 'cursor-default' : 'cursor-pointer'
                                 }`}
@@ -203,7 +194,7 @@ export default function MoviePage() {
                 <source src="/videos/BigBuckBunny.mp4" type="video/mp4" />
             </video>
 
-            {videoEnded && (
+            {videoEnded && !userHasRated && (
                 <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center">
                     <Rating />
                 </div>
