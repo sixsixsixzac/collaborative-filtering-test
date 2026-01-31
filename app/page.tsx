@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/navbar";
 import { MovieList } from "@/components/movieList";
 import { useUserStore } from "@/lib/stores/user-store";
-import type { Movie, MovieCategory, User } from "@/lib/interfaces";
+import type { MovieCategory } from "@/lib/interfaces";
 
 export default function Home() {
   const currentUser = useUserStore((state) => state.currentUser);

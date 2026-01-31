@@ -45,9 +45,15 @@ export default function MoviePage() {
 
     useEffect(() => {
         const fetchMovie = async () => {
+            if (!currentUser) {
+                setError('User not found. Please refresh the page.');
+                setLoading(false);
+                return;
+            }
+
             try {
                 setLoading(true);
-                const movieData = await MovieService.getMovieDetails(movieId, currentUser?.id);
+                const movieData = await MovieService.getMovieDetails(movieId, currentUser.id);
                 setMovie(movieData);
 
                 if (movieData.userRating) {
@@ -61,12 +67,17 @@ export default function MoviePage() {
             }
         };
 
-        if (movieId) { fetchMovie(); }
-    }, [movieId]);
+        if (movieId && currentUser) { 
+            fetchMovie(); 
+        }
+    }, [movieId, currentUser]);
 
 
     const onRate = async (starValue: number) => {
-        if (!currentUser?.id) { return; }
+        if (!currentUser) { 
+            setError('User not found. Please refresh the page.');
+            return; 
+        }
 
         try {
             await MovieService.rateMovie(movieId, starValue, currentUser.id);

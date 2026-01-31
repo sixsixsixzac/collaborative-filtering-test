@@ -50,9 +50,7 @@ export async function POST(
         userRating = existingRating.rating;
       } else {
         const predicted = predictedRate(userId, movieId);
-        if (predicted !== null) {
-          displayRating = predicted;
-        }
+        if (predicted !== null) displayRating = predicted;
       }
     }
 

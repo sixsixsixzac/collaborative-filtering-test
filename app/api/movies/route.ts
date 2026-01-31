@@ -33,10 +33,10 @@ export async function POST(request: Request) {
     const recommendCategory = {
       name: 'Recommended',
       movies: recommendMovies
-    };
+    };  
 
     const movieCategories = moviesData.map(category => {
-      const moviesWithRatings = category.movies.map(movie => {
+      const moviesWithRatings = category.movies.map( movie => {
         const movieWithRating = {
           id: movie.id,
           title: movie.title,
