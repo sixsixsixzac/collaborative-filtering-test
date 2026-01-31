@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import moviesData from '@/lib/data/movies.json';
 import { calcAvgRating } from '@/lib/utils';
-import { MovieController } from '@/lib/controllers/movie.controller';
+import { predictedRate } from '@/lib/utils/prediction';
+import ratingsDataRaw from '@/lib/data/ratings.json';
 
 export async function POST(request: Request) {
   try {
@@ -10,6 +11,29 @@ export async function POST(request: Request) {
     if (!userId) {
       return NextResponse.json({ error: 'userId is required' }, { status: 400 });
     }
+
+    const unseenMovies = moviesData.flatMap(category =>
+      category.movies.filter(movie => {
+        const userRating = ratingsDataRaw.find(rating => rating.movieId === movie.id && rating.userId === userId);
+        return !userRating;
+      })
+    );
+
+    const recommendMovies = unseenMovies.map(movie => {
+      const predictedRating = predictedRate(userId, movie.id);
+      return {
+        id: movie.id,
+        title: movie.title,
+        image: movie.image,
+        releaseDate: movie.releaseDate,
+        rating: predictedRating ?? 5.0,
+      };
+    }).sort((a, b) => b.rating - a.rating).slice(0, 6);
+
+    const recommendCategory = {
+      name: 'Recommended',
+      movies: recommendMovies
+    };
 
     const movieCategories = moviesData.map(category => {
       const moviesWithRatings = category.movies.map(movie => {
@@ -32,14 +56,7 @@ export async function POST(request: Request) {
       return categoryWithRatings;
     });
 
-
-    const unseenMovies = MovieController.getUnseenMovies(userId);
-    const unseenCategory = {
-      name: 'Unseen',
-      movies: unseenMovies
-    };
-
-    const allCategories = [unseenCategory, ...movieCategories];
+    const allCategories = [recommendCategory, ...movieCategories];
 
     return NextResponse.json(allCategories);
   } catch (error) {

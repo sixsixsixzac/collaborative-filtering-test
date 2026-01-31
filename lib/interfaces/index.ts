@@ -24,3 +24,8 @@ export interface User {
   id: string;
   name: string;
 }
+
+export interface RecommendMovie {
+  movieId: number;
+  rate: number;
+}
